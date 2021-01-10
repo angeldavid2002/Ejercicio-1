@@ -42,7 +42,7 @@ namespace Presentacion
                     Visualizar();
                 }else if (opc == 3)
                 {
-
+                    CalcularResultados();
                 }else if (opc==4)
                 {
                     Console.WriteLine("fin de la ejecucion (presione tecla para salir)");
@@ -87,16 +87,54 @@ namespace Presentacion
         }
         static void CalcularResultados()
         {
-            string[,] tiendas = new string[10,2];
-            int ventasTotales=0;
-            for (int i = 0; i < 10; i++)
+            try
             {
-                tiendas[i, 0]=Convert.ToString(i+1);
+                Console.Clear();
+                Console.WriteLine("-------informe--------");
+                string[,] tiendas = new string[11, 2];
+                string[,] porcentajesVentas = new string[9, 2];
+                int ventasTotales = 0;
+                ////////////////////////
+                for (int i = 0; i < 11; i++)
+                {
+                    tiendas[i, 0] = Convert.ToString(i);
+                }
+                for (int i = 1; i < numeroVentas; i++)
+                {
+                    tiendas[Convert.ToInt32(ventas[i, 0]), 1] = Convert.ToString(Convert.ToInt32(tiendas[Convert.ToInt32(ventas[i, 0]), 1]) + Convert.ToInt32(ventas[i, 2]));
+                    ventasTotales = Convert.ToInt32(ventas[i, 2]) + ventasTotales;
+                }
+                ////////////////////////
+                for (int i = 0; i < 9; i++)
+                {
+                    porcentajesVentas[i, 0] = Convert.ToString(i);
+                }
+                for (int i = 1; i < numeroVentas; i++)
+                {
+                    porcentajesVentas[Convert.ToInt32(ventas[i, 1]), 1] = Convert.ToString(Convert.ToDouble(porcentajesVentas[Convert.ToInt32(ventas[i, 1]), 1]) + Convert.ToDouble(ventas[i, 2]));
+                }
+                for (int i = 1; i < 9; i++)
+                {
+                    porcentajesVentas[i, 1] = Convert.ToString(Convert.ToDouble(porcentajesVentas[i, 1]) / ventasTotales * 100);
+                }
+                Console.WriteLine("-------ventas totales de cada tienda:\n");
+                for (int i = 1; i < 11; i++)
+                {
+                    Console.Write("tienda " + tiendas[i, 0] + " vendio: " + tiendas[i, 1] + " productos\n");
+                }
+                Console.WriteLine("\n-------ventas totales en todas las tiendas: \n");
+                Console.WriteLine("total de ventas fueron: " + ventasTotales + "\n");
+                Console.WriteLine("--------Procentaje de ventas totales para cada uno de los artículos deportivos:\n");
+                for (int i = 1; i < 9; i++)
+                {
+                    Console.WriteLine("articulo " + porcentajesVentas[i, 0] + " fue un " + porcentajesVentas[i, 1] + "% de las ventas totales");
+                }
+                Console.ReadKey();
             }
-            for (int i = 0; i < numeroVentas; i++)
+            catch (Exception e)
             {
-                tiendas[Convert.ToInt32(ventas[i, 0]), 0]= Convert.ToString(Convert.ToInt32(tiendas[Convert.ToInt32(ventas[i, 0]), 1]) +Convert.ToInt32(ventas[i,2]));
-                ventasTotales = Convert.ToInt32(ventas[i, 2]) + ventasTotales;
+                Console.WriteLine("error: "+e.Message);
+                Console.ReadKey();
             }
             
         }
